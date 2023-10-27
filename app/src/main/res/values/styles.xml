@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Style.ButtonWidget" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/blue_main</item>
+        <item name="strokeWidth">5dp</item>
+        <item name="strokeColor">@color/blue_main</item>
+        <item name="colorControlActivated">@color/blue_main</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="android:paddingStart">50dp</item>
+        <item name="android:paddingEnd">50dp</item>
+    </style>
+    <!-- Для компонентов RecyclerView rule.LIST_DEVICE-->
+    <style name="Style.TextItemRVText" parent="Widget.MaterialComponents.TextView">
+        <item name="android:lines">1</item>
+        <item name="android:text">@tools:sample/lorem/random</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">40dp</item>
+    </style>
+    <style name="TextItemRVTextSmall" parent="Style.TextItemRVText">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+</resources>

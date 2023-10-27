@@ -1,0 +1,12 @@
+<resources>
+    <!-- Default/Common margins -->
+    <dimen name="default_margin">10dp</dimen>
+    <dimen name="common_margin">5dp</dimen>
+    <!-- Default/Common padding -->
+    <dimen name="Common_padding">5dp</dimen>
+    <dimen name="common_padding_for_text">2dp</dimen>
+    <!-- Default/Common textSize -->
+    <!-- Default/Common Radius CardView or ... -->
+    <dimen name="default_radius_container">20dp</dimen>
+    <!-- Особые -->
+</resources>

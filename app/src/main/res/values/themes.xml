@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BLEFRAMainTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue_main</item>
+        <item name="colorPrimaryVariant">@color/blue_main</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/black</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Color progressBar -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorAccent">@color/blue_main</item>
+        <item name="android:statusBarColor">@color/blue_main</item>
+    </style>
+</resources>

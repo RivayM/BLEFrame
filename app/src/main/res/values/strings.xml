@@ -1,0 +1,71 @@
+<!--///////////////////////////////////////////////////////////////////////////////-->
+<!--Дублирование ( в Приложении используются следующие теги:-->
+<!--*title_app* = Названия/Наименования/Заголовки Приложения, навигации, фрагментов  (все что для приложения(основное) и для навигации)-->
+<!--*text_view* текст кнопок,содержание view, button (те что не более 2-3 слов)-->
+<!--*action_message* = Предупреждения/короткие сообщения ( тег = описание сообщения в краткой форме) -->
+<!--*service_supporting* = Прочее/Вспомогательное ( неопределенное или согласно названию)-->
+<!--///////////////////////////////////////////////////////////////////////////////-->
+<resources>
+    <!--*title_app* = Названия/Наименования/Заголовки Приложения, навигации, фрагментов, меню-->
+    <string name="title_app_name_app">BLEFrame</string>
+    <string name="title_app_navigation_name_logs">LOG\'s</string>
+    <string name="title_app_navigation_name_settings">SETTINGS</string>
+    <string name="title_app_navigation_name_device">DEVICE</string>
+    <string name="title_app_navigation_name_device_scan">DEVICE SCAN</string>
+    <string name="title_app_menu_state_ble">BLE</string>
+    <string name="title_app_menu_state_location">LOCATION</string>
+
+    <!--*text_view* текст кнопок,содержание view,button (те что не более 2-3 слов)-->
+    <string name="text_view_out">ВЫЙТИ</string>
+    <string name="txt_view_ok">ОК</string>
+    <string name="text_view_back">НАЗАД</string>
+    <string name="text_view_cansel">ОТМЕНА</string>
+    <string name="text_view_continue">ПРОДОЛЖИТЬ</string>
+
+    <!--*title_view* = Названия/Наименования/Заголовки Сообщений или View-->
+    <string name="title_view_activity_main">Energomera bluetooth remote control</string>
+    <string name="title_view_on_all">Включить Bluetooth и GPS</string>
+    <string name="title_view_on_bluetooth">Включить Bluetooth</string>
+    <string name="title_view_on_location">Включить GPS</string>
+    <string name="title_view_start_connect">Подключение</string>
+    <string name="title_view_info">Информация:</string>
+
+    <!--*action_message* = Предупреждения/короткие сообщения  -->
+    <string name="action_message_user_go_out_title">Выход</string>
+    <string name="action_message_user_go_out_message">Вы действительно хотите выйти из приложения?</string>
+    <string name="action_message_error_start_app">Приложению не доступен Bluetooth или GPS.</string>
+    <string name="action_message_please_on_permission_gps_title">Пожалуйста, разрешите доступ к геолокации.</string>
+    <string name="action_message_please_on_permission_gps_message">Для работы приложения необходимо получить разрешение к геолокации.</string>
+    <string name="action_message_please_on_ble_gps">Для работы приложения необходимо включить Bluetooth и GPS, пожалуйста, включите. Затем нажмите "OK"</string>
+    <string name="action_message_on_ble_gps">Для работы приложения необходимо включить Bluetooth и GPS, пожалуйста, включите.</string>
+    <string name="action_message_not_available_bluetooth">Очень жаль, но Ваше устройство не поддерживает Bluetooth</string>
+    <string name="action_message_not_on_bluetooth">Пожалуйста, включите Bluetooth</string>
+    <string name="action_message_on_bluetooth">Включен Bluetooth</string>
+    <string name="action_message_connect_failed_bluetooth">Соединение разоравано</string>
+    <string name="action_message_connect_successfully_bluetooth">Соединение успешно</string>
+    <string name="action_message_something_went_wrong_bluetooth">Что-то пошло не так</string>
+    <string name="action_message_please_select_device_bluetooth">Пожалуйста выберите устройство для подключения</string>
+    <string name="action_message_sorry_not_found_device_bluetooth">Поблизости не найдено ни одно устройство</string>
+    <string name="action_message_connect_on_this_mac">Подключится по:</string>
+
+    <!-- *content_description* = contentDescription для -->
+    <string name="content_description_plug">заглушка content description</string>
+    <string name="content_description_logs">логи</string>
+    <string name="content_description_main_info">Информация</string>
+    <string name="content_description_settings">Настройки</string>
+    <string name="content_description_scan">Сканирование</string>
+    <string name="content_description_connect">Подключение</string>
+    <string name="content_description_image_counter">Счетчик электроэнергии</string>
+
+    <!--*service_supporting* = Прочее/Вспомогательное-->
+    <string name="on">Включен</string>
+    <string name="off">Выключен</string>
+    <string name="button_text_found">найти</string>
+    <string name="activity_button_found_repeat">повторить</string>
+    <string name="mac_device">00:00:00:00:00</string>
+    <string name="name_device">имя устройства</string>
+    <string name="back">назад</string>
+    <string name="title_activity_main_navigation">MainActivity</string>
+
+
+</resources>
