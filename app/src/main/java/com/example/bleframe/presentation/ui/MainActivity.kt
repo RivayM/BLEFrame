@@ -1,7 +1,9 @@
 package com.example.bleframe.presentation.ui
 
+import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -9,13 +11,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.BLEFrame.R
-import com.example.BLEFrame.databinding.ActivityMainBinding
+import com.example.bleframe.R
+import com.example.bleframe.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private val viewModel by viewModels<MainViewModel>()
+
+    private val bleAdapter: BluetoothAdapter? = null
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
 
@@ -24,12 +29,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
         initNav()
-        supportActionBar?.hide()
+        //supportActionBar?.hide()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_menu,menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 
     private fun initNav(){
@@ -47,9 +57,15 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController!!)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
+    private fun initAdapter(){
+
     }
+
+
+    private fun checkOnBle(){
+
+
+    }
+
 
 }

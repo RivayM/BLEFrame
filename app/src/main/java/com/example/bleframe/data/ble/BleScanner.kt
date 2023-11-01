@@ -1,117 +1,105 @@
 package com.example.bleframe.data.ble
 
-import android.annotation.SuppressLint
+import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.*
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class BleScanner @Inject constructor(@ApplicationContext private val context: Context){
-    /*
-     * 2 Активных метода startScan и stopScan
-     * foundDevice - список устройтсв
-     * Остальное иниициализация сканера
-     */
+/********************************************/
+//FOR USE: 0. startScan
+//         1. stopScan
+//         2. foundNewDevice
+/********************************************/
 
-    private var manager : BluetoothManager? = null
+@Singleton
+class BleScanner @Inject constructor(@ApplicationContext private val appContext: Context){
+
     private var scanner: BluetoothLeScanner? = null
     private var callback: BleScanCallback? = null
     private val settings: ScanSettings
-    private var filters: List<ScanFilter>        // фильтр по поиску устройств
+    private var filters: List<ScanFilter>
+    var adapter : BluetoothAdapter
+    var manager : BluetoothManager? = null
 
     init {
+        manager = appContext.getSystemService(BluetoothManager::class.java)
+            ?: throw IllegalArgumentException("Device Android not available Bluetooth Adapter. BLE SCAN")
+        adapter = manager?.adapter
+            ?: throw IllegalArgumentException("Bluetooth Adapter = null")
         settings = buildSettings()
         filters = buildFilter()
     }
 
-    private val _foundDevice = MutableSharedFlow<BluetoothDevice>()
-    val foundDevice = _foundDevice.asSharedFlow()
+    private val _foundNewDevice = MutableStateFlow<BluetoothDevice?>(null)
+    val foundNewDevice = _foundNewDevice /*.asStateFlow() */
+
+    private fun buildSettings() =
+        ScanSettings.Builder()
+            .setScanMode((ScanSettings.SCAN_MODE_LOW_LATENCY))
+            .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
+            .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
+            .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
+            .build()
+
+    private fun buildFilter() = listOf(ScanFilter.Builder().build())
+
+    inner class BleScanCallback : ScanCallback(){
+        override fun onScanResult(callbackType: Int, result: ScanResult) {
+            super.onScanResult(callbackType, result)
+            if (result.device != null) getDevice(result.device)
+        }
+
+        override fun onBatchScanResults(results: MutableList<ScanResult>) {
+            results.forEach{ _ ->
+                Log.e("MyLog"," mac : $results")
+            }
+        }
+
+        override fun onScanFailed(errorCode: Int) {
+            Log.e("MyLog","failed scan $errorCode")
+        }
+    }
+
+    private fun checkPermission( whatIsCheckPermission:() -> Unit):Boolean {
+            return if (ActivityCompat.checkSelfPermission(
+                    appContext,
+                    Manifest.permission.BLUETOOTH_SCAN
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                whatIsCheckPermission()
+                true
+            } else false
+        }
 
     private fun getDevice(device:BluetoothDevice) {
         val job = SupervisorJob()
         val scope = CoroutineScope(job+Dispatchers.Default)
         scope.launch {
-            _foundDevice.emit(device)
+            _foundNewDevice.emit(device)
             job.complete()
             job.join()
         }
     }
 
-    @SuppressLint("MissingPermission")
-    // Просьба сделать проверку на получение разрешения
-    // Если не выполнить команда scanner не выполнится
-    // ошибку можно игнорировать
-    fun startScan(permission : Boolean){
-        manager = context.getSystemService(BluetoothManager::class.java)
-        if (callback == null){            // оповещение сканера
-            callback = BleScanCallback()
-            if (manager?.adapter == null) // По фатку проверка есть ли у устройства андроид блютуз
-                throw IllegalArgumentException("Device Android not available Bluetooth Adapter. BLE SCAN")
-            else{
-                scanner = manager?.adapter?.bluetoothLeScanner
-                if(permission)
-                    scanner?.startScan(filters, settings, callback) // требует разрешения
-                else
-                    throw IllegalArgumentException("permission not received. BLE SCAN")
-            }
-        }
+    fun startScan() {
+        callback = BleScanCallback()
+        scanner = adapter.bluetoothLeScanner
+        checkPermission { scanner?.startScan(filters, settings, callback) }
     }
 
-    @SuppressLint("MissingPermission")
-    // Просьба сделать проверку на получение разрешения
-    // Если не выполнить команда scanner не выполнится
-    // ошибку можно игнорировать
-    fun stopScan(permission : Boolean){
-        if (callback != null){
-            if(permission)  scanner?.stopScan(callback) // требует разрешения
-            else throw IllegalArgumentException("permission not received. BLE SCAN")
-            scanner = null
-            callback = null
-        }
-        manager = null
-    }
-
-    /* Первичная настройка сканера */
-    private fun buildSettings() =
-        ScanSettings.Builder()
-            .setScanMode((ScanSettings.SCAN_MODE_LOW_LATENCY))          // режим работы приемника(потребление)
-            .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)    // вызов колбека в соответсвии с фильтрами( срабатывает каждый раз
-            .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)  // количество пакетов ( кол-во данных необходимых для совпадения)
-            .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)           // режим поиска(сопр(даже со слабым сигналом)
-            .build()
-
-    /* Список установленных фильтров для поиска устройств*/
-    private fun buildFilter() =
-        listOf(
-            ScanFilter.Builder()
-            // фильтр ( null = все ближайщие устройства )
-            .build()
-        )
-
-    /* Внутренний класс об оповещении, в зависимости от настроек! читать Scanner Bluetooth*/
-    inner class BleScanCallback : ScanCallback(){
-        override fun onScanResult(callbackType: Int, result: ScanResult) {
-            super.onScanResult(callbackType, result)
-            if (result.device != null) getDevice(result.device)
-            //Log.d("MyLog"," mac : ${result.device.address}")
-        }
-
-        override fun onBatchScanResults(results: MutableList<ScanResult>) {
-            results.forEach{ _ ->
-                Log.d("MyLog"," mac : ${results}")
-                // получение готовым списком найденных устройств
-                // сработает если использовать другой setScanMode((ScanSettings.SCAN_MODE_LOW_LATENCY)
-            }
-        }
-
-        override fun onScanFailed(errorCode: Int) {
-            Log.d("MyLog","failed scan $errorCode")
-        }
+    fun stopScan() {
+        checkPermission { scanner?.stopScan(callback) }
+        scanner = null
+        callback = null
     }
 }

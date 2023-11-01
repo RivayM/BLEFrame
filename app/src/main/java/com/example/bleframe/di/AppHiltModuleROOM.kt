@@ -10,13 +10,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/*****************************************************************************/
+/****                             Room                                 * *****/
+/*****************************************************************************/
+
 @Module
 @InstallIn(SingletonComponent::class)
 object AppHiltModuleROOM {
-
-    /*****************************************************************************/
-    /****                             Room                                 * *****/
-    /*****************************************************************************/
 
     @Provides
     fun providesNameBD() = "bd_app"  // база данных для сохранненения запроса

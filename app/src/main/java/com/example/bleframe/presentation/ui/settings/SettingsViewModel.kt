@@ -1,13 +1,10 @@
 package com.example.bleframe.presentation.ui.settings
 
 import androidx.lifecycle.ViewModel
-import dagger.assisted.AssistedFactory
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class SettingsViewModel  @Inject constructor(): ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(): ViewModel() {
 
-    @AssistedFactory
-    interface Factory {
-        fun build(): SettingsViewModel
-    }
 }
