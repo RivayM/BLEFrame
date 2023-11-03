@@ -9,5 +9,4 @@ class BleDataSources @Inject constructor(var bleService: BleService, var bleScan
         bleScanner.adapter
         bleScanner.manager
     }
-
 }
