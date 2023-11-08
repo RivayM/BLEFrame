@@ -11,7 +11,7 @@
         <item name="android:paddingStart">50dp</item>
         <item name="android:paddingEnd">50dp</item>
     </style>
-    <!-- Для компонентов RecyclerView rule.LIST_DEVICE-->
+    <!-- RecyclerView rule.LIST_DEVICE-->
     <style name="Style.TextItemRVText" parent="Widget.MaterialComponents.TextView">
         <item name="android:lines">1</item>
         <item name="android:text">@tools:sample/lorem/random</item>

@@ -5,6 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LogsViewModel @Inject constructor() : ViewModel() {
+class LogsVM @Inject constructor() : ViewModel() {
 
 }

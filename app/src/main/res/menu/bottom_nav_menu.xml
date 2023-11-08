@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@id/fragment_device_scan"
+        android:id="@id/fragment_device"
         android:icon="@drawable/ic_bluetooth_searching_24"
         android:title="@string/title_app_navigation_name_device" />
 

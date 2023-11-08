@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DeviceScanViewModel @Inject constructor(
+class DeviceVM @Inject constructor(
 ) : ViewModel() {
 
 

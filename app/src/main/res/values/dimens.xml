@@ -8,5 +8,6 @@
     <!-- Default/Common textSize -->
     <!-- Default/Common Radius CardView or ... -->
     <dimen name="default_radius_container">20dp</dimen>
-    <!-- Особые -->
+    <!--APP _fragment-->
+    <dimen name="dimen_fragment_device_margin_button_search">30dp</dimen>
 </resources>

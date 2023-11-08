@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/fragment_device_scan">
+    app:startDestination="@id/fragment_device">
 
     <fragment
-        android:id="@+id/fragment_device_scan"
-        android:name="com.example.bleframe.presentation.ui.device_ble.DeviceScanFragment"
+        android:id="@+id/fragment_device"
+        android:name="com.example.bleframe.presentation.ui.device_ble.DeviceFragment"
         android:label="@string/title_app_navigation_name_device_scan"
-        tools:layout="@layout/fragment_sample_content" />
+        tools:layout="@layout/fragment_app" />
 
     <fragment
         android:id="@+id/fragment_logs"
         android:name="com.example.bleframe.presentation.ui.logs.LogsFragment"
         android:label="@string/title_app_navigation_name_logs"
-        tools:layout="@layout/fragment_sample_content"/>
+        tools:layout="@layout/fragment_logs"/>
 
     <fragment
         android:id="@+id/fragment_settings"
         android:name="com.example.bleframe.presentation.ui.settings.SettingsFragment"
         android:label="@string/title_app_navigation_name_settings"
-        tools:layout="@layout/fragment_sample_content" />
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

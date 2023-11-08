@@ -18,9 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
-
-    private val bleAdapter: BluetoothAdapter? = null
+    private val viewModel by viewModels<MainVM>()
     private var binding: ActivityMainBinding? = null
     private var navController: NavController? = null
 
@@ -50,22 +48,10 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.fragment_device_scan, R.id.fragment_logs, R.id.fragment_settings,
+                R.id.fragment_device, R.id.fragment_logs, R.id.fragment_settings,
             )
         )
         setupActionBarWithNavController(navController!!, appBarConfiguration)
         navView.setupWithNavController(navController!!)
     }
-
-    private fun initAdapter(){
-
-    }
-
-
-    private fun checkOnBle(){
-
-
-    }
-
-
 }

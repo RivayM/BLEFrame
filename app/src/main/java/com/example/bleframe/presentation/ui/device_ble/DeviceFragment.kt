@@ -1,4 +1,4 @@
-package com.example.bleframe.presentation.ui.logs
+package com.example.bleframe.presentation.ui.device_ble
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +13,9 @@ import com.example.bleframe.presentation.adapters.AdapterRV
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LogsFragment : Fragment() {
+class DeviceFragment : Fragment() {
 
-    private val viewModel by viewModels<LogsVM>()
+    private val viewModel by viewModels<DeviceVM>()
     private var adapterRV: AdapterRV? = null
     private var _binding: FragmentAppBinding? = null
     private val binding get() = _binding!!
@@ -38,17 +38,16 @@ class LogsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapterRV = null
         _binding = null
     }
 
-    private fun setContent(){
+    fun setContent(){
         binding.apply {
-            fragmentDeviceLottie.visibility = View.GONE
-            fragmentDeviceButton.visibility =View.GONE
+            fragmentDeviceLottie.editorLottie { lottie->
+                lottie.setAnimation(R.raw.lottie_search)
             }
         }
-
+    }
     private fun initAdapterRv(){
         binding.fragmentDeviceRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
