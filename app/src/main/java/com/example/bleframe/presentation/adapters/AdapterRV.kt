@@ -15,28 +15,25 @@ class AdapterRV (
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(
         SampleRvBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
-    )
+    ){ listener() }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        getItem(position)?.let { holder.setData(it){  listener()  } }
-    }
+    override fun onBindViewHolder(holder: Holder, position: Int) { getItem(position)?.let { holder.setData(it) } }
 
-    class Holder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(private val view: View, private val clickListener:()-> Unit) : RecyclerView.ViewHolder(view) {
 
-        fun setData(data: RvData, listener:()-> Unit) {
+        fun setData(data: RvData) {
             when(true){
-                (data is RvData.Device)->{
-
-                }
-                (data is RvData.Log)->{
-
-                }
-                (data is RvData.Settings)->{
-
-                }
+                (data is RvData.Device)     -> setAsDeviceScan()
+                (data is RvData.Log)        -> setAsLog()
+                (data is RvData.Settings)   -> setAsSetting()
                 else -> throw IllegalArgumentException("Holder. Unknown Type for data: RvData")
             }
         }
+
+        private fun setAsSetting(){}
+        private fun setAsDeviceScan(){}
+        private fun setAsDevice(){}
+        private fun setAsLog(){}
 
         class Comparator <Data: RvData> : DiffUtil.ItemCallback<Data>() {
             override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean = oldItem == newItem
