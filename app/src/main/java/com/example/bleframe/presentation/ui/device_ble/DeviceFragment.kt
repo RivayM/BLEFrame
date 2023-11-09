@@ -33,7 +33,6 @@ class DeviceFragment : Fragment() {
         super.onStart()
         setContent()
         initAdapterRv()
-
     }
 
     override fun onDestroyView() {
@@ -48,6 +47,7 @@ class DeviceFragment : Fragment() {
             }
         }
     }
+
     private fun initAdapterRv(){
         binding.fragmentDeviceRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -55,7 +55,4 @@ class DeviceFragment : Fragment() {
 
         }
     }
-
-
-
 }

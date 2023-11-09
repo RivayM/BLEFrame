@@ -22,14 +22,14 @@ import javax.inject.Singleton
 /********************************************/
 
 @Singleton
-class BleScanner @Inject constructor(@ApplicationContext private val appContext: Context){
+class BleManagerApp @Inject constructor(@ApplicationContext private val appContext: Context){
 
     private var scanner: BluetoothLeScanner? = null
     private var callback: BleScanCallback? = null
     private val settings: ScanSettings
     private var filters: List<ScanFilter>
-    var adapter : BluetoothAdapter
-    var manager : BluetoothManager? = null
+    private var adapter : BluetoothAdapter
+    private var manager : BluetoothManager? = null
 
     init {
         manager = appContext.getSystemService(BluetoothManager::class.java)
@@ -102,4 +102,7 @@ class BleScanner @Inject constructor(@ApplicationContext private val appContext:
         scanner = null
         callback = null
     }
+
+    fun getBleState() = adapter.isEnabled
+
 }
