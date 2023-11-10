@@ -40,7 +40,7 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    fun setContent(){
+    private fun setContent(){
         binding.apply {
             fragmentDeviceLottie.visibility = View.GONE
             fragmentDeviceButton.visibility =View.GONE

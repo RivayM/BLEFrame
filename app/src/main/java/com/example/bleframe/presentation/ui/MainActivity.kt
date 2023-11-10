@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -31,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import no.nordicsemi.android.ble.BleManager
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -42,8 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var menu: Menu? = null
 
     private val job = SupervisorJob()
-    private val scopeDef = CoroutineScope( job + lifecycleScope.coroutineContext + Dispatchers.Main)
-
+    private val scope = CoroutineScope( job + lifecycleScope.coroutineContext + Dispatchers.Main)
 
     private var bleLauncher: ActivityResultLauncher<Intent>? = null
     private var locationLauncher: ActivityResultLauncher<Intent>? = null
@@ -54,12 +51,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding!!.root)
         initNav()
         registerBleLauncher()
-
-        //supportActionBar?.hide()
     }
 
     override fun onStart() {
-       // observers()
+        observers()
         super.onStart()
     }
 
@@ -72,21 +67,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
-    }
-
-    private fun initNav(){
-        val navView: BottomNavigationView = binding!!.activityMainNavView
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.activity_main_nav_host_fragment_navigation) as NavHostFragment
-        navController = navHostFragment.navController
-
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.fragment_device, R.id.fragment_logs, R.id.fragment_settings,
-            )
-        )
-        setupActionBarWithNavController(navController!!, appBarConfiguration)
-        navView.setupWithNavController(navController!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -104,6 +84,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initNav(){
+        val navView: BottomNavigationView = binding!!.activityMainNavView
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.activity_main_nav_host_fragment_navigation) as NavHostFragment
+        navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.fragment_device, R.id.fragment_logs, R.id.fragment_settings,
+            )
+        )
+        setupActionBarWithNavController(navController!!, appBarConfiguration)
+        navView.setupWithNavController(navController!!)
+    }
+
     private fun registerBleLauncher(){
         bleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if (it.resultCode == Activity.RESULT_OK){
@@ -112,21 +107,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun startBleLauncher() = bleLauncher?.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+
     private fun registerLocationLauncher(){
         bleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if (it.resultCode == Activity.RESULT_OK){
-                //
+
             }
         }
     }
 
-     private fun startBleLauncher() = bleLauncher?.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
-
-
     private fun startLocationLauncher(){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                bleLauncher?.launch(Intent(LocationManager.ACTION_GNSS_CAPABILITIES_CHANGED))
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            bleLauncher?.launch(Intent(LocationManager.ACTION_GNSS_CAPABILITIES_CHANGED))
+        }
     }
 
     private fun showSnackBar(text:String) = Snackbar.make(binding!!.root,text,Snackbar.LENGTH_SHORT).show()
@@ -135,20 +129,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.stateBle.onEach {
             try {
                 when(it){
-                    true -> menu?.getItem(menu?.findItem(R.id.top_menu_state_ble)!!.itemId)?.icon =
-                        AppCompatResources.getDrawable(this,R.drawable.ic_bluetooth_on_24)
-                    false -> menu?.getItem(menu?.findItem(R.id.top_menu_state_ble)!!.itemId)?.icon =
-                        AppCompatResources.getDrawable(this,R.drawable.ic_bluetooth_off_24)
+                    true -> menu?.getItem(0)?.icon =
+                        AppCompatResources.getDrawable(applicationContext,R.drawable.ic_bluetooth_on_24)
+                    false -> menu?.getItem(0)?.icon =
+                        AppCompatResources.getDrawable(applicationContext,R.drawable.ic_bluetooth_off_24)
                 }
-
             }
             catch (e:Exception){
-                showSnackBar("error $e")
+                Log.d("MyLog","error $e")
             }
 
-        }.launchIn(scopeDef)
+        }.launchIn(scope)
     }
-
 
     companion object{
         const val NULL_ICON_ID = 9999

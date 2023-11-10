@@ -19,7 +19,7 @@ import javax.inject.Singleton
 object AppHiltModuleROOM {
 
     @Provides
-    fun providesNameBD() = "bd_app"  // база данных для сохранненения запроса
+    fun providesNameBD() = "bd_app"
 
     @Singleton
     @Provides
@@ -39,7 +39,7 @@ object AppHiltModuleROOM {
         RoomDataBaseApp::class.java,
         name
     )
-        /*.addMigrations(MIGRATION_1_2)*/ // сюда миграцию добавить если очень надо
+        /*.addMigrations(MIGRATION_1_2)*/
         .build()*/
 
     @Singleton

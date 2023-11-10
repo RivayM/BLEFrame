@@ -1,5 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.bleframe.presentation.custom_view.CustomItemRv
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_item_rv_cl"
+    android:background="@color/grey_light"
     android:layout_width="match_parent"
-    android:layout_height="40dp"/>
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/Style.TextItemRVText"
+        android:translationZ="2dp"
+        android:id="@+id/custom_item_rv_text_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/custom_item_rv_text_bottom"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/custom_item_rv_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/TextItemRVTextSmall"
+        android:id="@+id/custom_item_rv_text_bottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/custom_item_rv_image"
+        app:layout_constraintTop_toBottomOf="@id/custom_item_rv_text_top" />
+
+    <ImageView
+        android:id="@+id/custom_item_rv_image"
+        android:translationZ="2dp"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_gravity="end"
+        android:contentDescription="@string/name_device"
+        android:src="@drawable/ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/custom_item_rv_text_top"
+        app:layout_constraintRight_toLeftOf="@id/custom_item_rv_lottie"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bleframe.presentation.custom_view.CustomViewLottie
+        android:id="@+id/custom_item_rv_lottie"
+        android:translationZ="2dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/custom_item_rv_image"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

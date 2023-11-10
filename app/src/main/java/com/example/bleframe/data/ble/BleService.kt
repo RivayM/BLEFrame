@@ -17,18 +17,18 @@ import javax.inject.Inject
 
 class BleService @Inject constructor(@ApplicationContext appContext: Context) : BleManager(appContext){
 
-    val notificationDeviceFlow = _notificationDeviceFlow
-    val notificationDataFlow = _notificationDataFlow
-    val infoServiceFlow = _infoServiceFlow
-    val dataFlow  = _dataFlow
-    val logInfoFlow = _logInfoFlow
+    val notificationDeviceFlow = _notificationDeviceFlow.asSharedFlow()
+    val notificationDataFlow = _notificationDataFlow.asSharedFlow()
+    val infoServiceFlow = _infoServiceFlow.asSharedFlow()
+    val dataFlow  = _dataFlow.asSharedFlow()
+    val logInfoFlow = _logInfoFlow.asSharedFlow()
 
     /*********/
     //TODO reed and write
     /*********/
 
     override fun log(priority: Int, message: String) {
-        Log.println(priority, "MyLog", "системные сообщения -> $message")
+        Log.println(priority, "MyLog", "System message -> $message")
     }
 
     @Deprecated("Deprecated in Java", ReplaceWith("GattCallbackImpl()"))
@@ -40,7 +40,7 @@ class BleService @Inject constructor(@ApplicationContext appContext: Context) : 
 
         @Deprecated("Deprecated in Java")
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
-            serviceGattSERVICE = gatt.getService(UUID_CHARACTERISTIC_SERVICE) ?: throw Exception("gatt.getService is null")
+            serviceGattSERVICE = gatt.getService(UUID_CHARACTERISTIC_SERVICE) ?: return false
             return (charSCSD != null && charWriteAndNoty != null)
         }
 

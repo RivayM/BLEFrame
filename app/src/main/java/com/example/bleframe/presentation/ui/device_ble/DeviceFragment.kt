@@ -40,7 +40,7 @@ class DeviceFragment : Fragment() {
         _binding = null
     }
 
-    fun setContent(){
+    private fun setContent(){
         binding.apply {
             fragmentDeviceLottie.editorLottie { lottie->
                 lottie.setAnimation(R.raw.lottie_search)
@@ -52,7 +52,6 @@ class DeviceFragment : Fragment() {
         binding.fragmentDeviceRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapterRV
-
         }
     }
 }

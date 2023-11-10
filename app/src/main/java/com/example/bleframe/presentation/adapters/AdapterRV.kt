@@ -8,32 +8,36 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bleframe.databinding.SampleRvBinding
 import com.example.bleframe.entities.RvData
+import com.example.bleframe.entities.RvData.ClickType
 
 class AdapterRV (
-    private val listener:()-> Unit
+    private val listener:(clickType:ClickType)-> Unit
 ) : ListAdapter<RvData, AdapterRV.Holder>(Holder.Comparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(
-        SampleRvBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
-    ){ listener() }
+        SampleRvBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    ){ listener}
 
     override fun onBindViewHolder(holder: Holder, position: Int) { getItem(position)?.let { holder.setData(it) } }
 
-    class Holder(private val view: View, private val clickListener:()-> Unit) : RecyclerView.ViewHolder(view) {
+    class Holder(private val binding: SampleRvBinding, private val listener:(clickType:ClickType)-> Unit) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setData(data: RvData) {
-            when(true){
-                (data is RvData.Device)     -> setAsDeviceScan()
-                (data is RvData.Log)        -> setAsLog()
-                (data is RvData.Settings)   -> setAsSetting()
-                else -> throw IllegalArgumentException("Holder. Unknown Type for data: RvData")
-            }
+        fun setData(data: RvData) = with(binding) {
+            if (data.lottie == null){
+                customItemRvLottie.visibility = View.GONE
+            } else customItemRvLottie.editorLottie {
+                    lottieAnimationView -> lottieAnimationView.setAnimation(data.lottie!!.lottieId) }
+
+            if (data.image == null){
+                customItemRvImage.visibility = View.GONE
+            } else customItemRvImage.setImageResource(data.image!!.imageId)
+
+            if (data.clickType == ClickType.NONE){
+            } else { binding.root.setOnClickListener { listener(data.clickType) } }
+
+            binding.customItemRvTextTop.text = data.textTop
+            binding.customItemRvTextBottom.text = data.textBot
         }
-
-        private fun setAsSetting(){}
-        private fun setAsDeviceScan(){}
-        private fun setAsDevice(){}
-        private fun setAsLog(){}
 
         class Comparator <Data: RvData> : DiffUtil.ItemCallback<Data>() {
             override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean = oldItem == newItem
