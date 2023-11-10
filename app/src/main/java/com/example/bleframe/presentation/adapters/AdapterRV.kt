@@ -22,12 +22,7 @@ class AdapterRV (
     class Holder(private val view: View, private val clickListener:()-> Unit) : RecyclerView.ViewHolder(view) {
 
         fun setData(data: RvData) {
-            when(true){
-                (data is RvData.Device)     -> setAsDeviceScan()
-                (data is RvData.Log)        -> setAsLog()
-                (data is RvData.Settings)   -> setAsSetting()
-                else -> throw IllegalArgumentException("Holder. Unknown Type for data: RvData")
-            }
+
         }
 
         private fun setAsSetting(){}

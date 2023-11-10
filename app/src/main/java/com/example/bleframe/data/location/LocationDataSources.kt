@@ -15,6 +15,5 @@ class LocationDataSources @Inject constructor(@ApplicationContext appContext: Co
         locationManager = appContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
 
-    //todo проверка location
 
 }

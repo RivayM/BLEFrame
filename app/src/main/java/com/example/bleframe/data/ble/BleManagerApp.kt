@@ -28,20 +28,18 @@ class BleManagerApp @Inject constructor(@ApplicationContext private val appConte
     private var callback: BleScanCallback? = null
     private val settings: ScanSettings
     private var filters: List<ScanFilter>
-    private var adapter : BluetoothAdapter
+    private var adapter : BluetoothAdapter?
     private var manager : BluetoothManager? = null
+    private val _foundDevice = MutableSharedFlow<BluetoothDevice?>()
+    val foundDevice = _foundDevice
 
     init {
         manager = appContext.getSystemService(BluetoothManager::class.java)
-            ?: throw IllegalArgumentException("Device Android not available Bluetooth Adapter. BLE SCAN")
         adapter = manager?.adapter
-            ?: throw IllegalArgumentException("Bluetooth Adapter = null")
         settings = buildSettings()
         filters = buildFilter()
     }
 
-    private val _foundNewDevice = MutableStateFlow<BluetoothDevice?>(null)
-    val foundNewDevice = _foundNewDevice /*.asStateFlow() */
 
     private fun buildSettings() =
         ScanSettings.Builder()
@@ -70,13 +68,13 @@ class BleManagerApp @Inject constructor(@ApplicationContext private val appConte
         }
     }
 
-    private fun checkPermission( whatIsCheckPermission:() -> Unit):Boolean {
+    private fun checkPermission(whatToDoIfCheckPermissionTrue:() -> Unit):Boolean {
             return if (ActivityCompat.checkSelfPermission(
                     appContext,
                     Manifest.permission.BLUETOOTH_SCAN
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                whatIsCheckPermission()
+                whatToDoIfCheckPermissionTrue()
                 true
             } else false
         }
@@ -85,7 +83,7 @@ class BleManagerApp @Inject constructor(@ApplicationContext private val appConte
         val job = SupervisorJob()
         val scope = CoroutineScope(job+Dispatchers.Default)
         scope.launch {
-            _foundNewDevice.emit(device)
+            _foundDevice.emit(device)
             job.complete()
             job.join()
         }
@@ -93,7 +91,7 @@ class BleManagerApp @Inject constructor(@ApplicationContext private val appConte
 
     fun startScan() {
         callback = BleScanCallback()
-        scanner = adapter.bluetoothLeScanner
+        scanner = adapter?.bluetoothLeScanner
         checkPermission { scanner?.startScan(filters, settings, callback) }
     }
 
@@ -103,6 +101,6 @@ class BleManagerApp @Inject constructor(@ApplicationContext private val appConte
         callback = null
     }
 
-    fun getBleState() = adapter.isEnabled
+    fun getBleState() = adapter?.isEnabled
 
 }
