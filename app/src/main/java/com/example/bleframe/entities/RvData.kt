@@ -4,27 +4,20 @@ interface RvData {
 
     val textTop: String
     val textBot: String
-    val lottie : RvLottie?
-    val image  : RvImage?
-    val setting: RvSetting?
+    val lottie: RvLottie?
+    val image: RvImage?
+    val clickType: ClickType
 
-    interface RvLottie{
-        val lottie: TypeLottie
+    interface RvLottie {
+        val lottieId: Int
 
-        enum class TypeLottie {
-            SEARCH,BUTTON
-        }
     }
 
-    interface RvImage{
-        val image: Int
+    interface RvImage {
+        val imageId: Int
     }
 
-    interface RvSetting{
-        val setting: TypeSetting
-
-        enum class TypeSetting{
-            TIMEOUT,LOGIN,LOGOUT
-        }
+    enum class ClickType {
+        TIMEOUT, LOGIN, LOGOUT, DEVICE, LOG, NONE
     }
 }
