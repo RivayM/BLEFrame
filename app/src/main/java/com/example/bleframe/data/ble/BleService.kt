@@ -23,9 +23,10 @@ class BleService @Inject constructor(@ApplicationContext appContext: Context) : 
     val dataFlow  = _dataFlow.asSharedFlow()
     val logInfoFlow = _logInfoFlow.asSharedFlow()
 
-    /*********/
-    //TODO reed and write
-    /*********/
+    override fun onPairingRequestReceived(device: BluetoothDevice, variant: Int, key: Int) {
+        super.onPairingRequestReceived(device, variant, key)
+        //todo get key for pairing and write key
+    }
 
     override fun log(priority: Int, message: String) {
         Log.println(priority, "MyLog", "System message -> $message")
@@ -41,12 +42,12 @@ class BleService @Inject constructor(@ApplicationContext appContext: Context) : 
         @Deprecated("Deprecated in Java")
         override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
             serviceGattSERVICE = gatt.getService(UUID_CHARACTERISTIC_SERVICE) ?: return false
-            return (charSCSD != null && charWriteAndNoty != null)
+            return (charSCSD != null && characteristicWR != null)
         }
 
         @Deprecated("Deprecated in Java")
         override fun initialize() {
-            setNotificationCallback(charWriteAndNoty).with{ device, data ->
+            setNotificationCallback(characteristicWR).with{ device, data ->
                 scope.launch {
                     _notificationDataFlow.emit(data)
                     _notificationDeviceFlow.emit(device)
@@ -54,14 +55,27 @@ class BleService @Inject constructor(@ApplicationContext appContext: Context) : 
                     parentJob.join()
                 }
             }
-            enableNotifications(charWriteAndNoty)
+            enableNotifications(characteristicWR)
            }
 
         @Deprecated("Deprecated in Java")
         override fun onServicesInvalidated() {
             charSCSD = null
-            charWriteAndNoty = null
+            characteristicWR = null
         }
+    }
+
+    fun write(
+        characteristic : BluetoothGattCharacteristic? = characteristicWR,
+        byteArray: ByteArray
+    ){
+        writeCharacteristic(characteristic, byteArray, WRITE_TYPE_NO_RESPONSE).enqueue()
+    }
+
+    fun read(
+        characteristic : BluetoothGattCharacteristic? = characteristicWR
+    ){
+        readCharacteristic(characteristic).enqueue()
     }
 
     companion object {
@@ -79,6 +93,6 @@ class BleService @Inject constructor(@ApplicationContext appContext: Context) : 
 
         private var serviceGattSERVICE: BluetoothGattService? = null
         private var charSCSD: BluetoothGattCharacteristic? = null
-        private var charWriteAndNoty: BluetoothGattCharacteristic? = null
+        private var characteristicWR: BluetoothGattCharacteristic? = null
     }
 }
